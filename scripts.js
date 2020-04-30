@@ -1,10 +1,12 @@
+//TODO change the counting for incorrect to use a boolean to check whether the user is typing a correct answer to avoid messing up in backspace
 var START = "Start";
 var STOP = "Stop";
 
 var start;
 var end;
-var current = 0;
-var wrong = 0;
+var current;
+var wrong; //keeps track of mistakes currently in box
+var incorrect; //keeps track of all mistakes to track accuracy
 var running = false;
 
 var button = document.getElementById("start-stop");
@@ -25,6 +27,8 @@ inputBox.addEventListener("keypress", function(e){
             }
         }else{
             wrong++;
+            incorrect++;
+            console.log(incorrect);
         }
     }
 });
@@ -42,6 +46,9 @@ inputBox.addEventListener("keydown", function(e){
 function mainButton(){
     console.log("started");
     if(button.innerText === START){  
+        current = 0;
+        wrong = 0;
+        incorrect = 0;  
         running = true;
         button.innerText = STOP;  
         inputBox.value = "";
@@ -62,6 +69,6 @@ function mainButton(){
         }
         inputBox.value = "";
         current = 0;
-        alert("You typed " + (Math.round(((spaces+1)/fullTime)*60)) + " wpm");
+        alert("You typed " + (Math.round(((spaces+1)/fullTime)*60)) + " wpm with an accuracy of " + Math.round((((textToType.length-incorrect) / textToType.length)*100)) + "%.");
     }
 }
