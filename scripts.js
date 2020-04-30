@@ -32,6 +32,9 @@ inputBox.addEventListener("keydown", function(e){
     if(running){
         if(e.keyCode === 8 && wrong === 0){
             current--;
+            if(current < 0){
+                current = 0;
+            }
         }
     }
 })
