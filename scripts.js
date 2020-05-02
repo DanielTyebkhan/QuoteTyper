@@ -18,7 +18,7 @@ inputBox.addEventListener("keypress", function(e){
     if(running){
         console.log(e.key);
         console.log(textToType[current]);
-        if(e.key === textToType[current]){
+        if(e.key === textToType[current] && current === inputBox.selectionStart){
             console.log(true);
             current++;
             wrong--;
@@ -30,6 +30,11 @@ inputBox.addEventListener("keypress", function(e){
             incorrect++;
             console.log(incorrect);
         }
+    }
+});
+inputBox.addEventListener("keyup", function(e){
+    if(wrong === 0 && current === textToType.length){
+        endGame();
     }
 });
 inputBox.addEventListener("keydown", function(e){
@@ -45,17 +50,19 @@ inputBox.addEventListener("keydown", function(e){
 
 function mainButton(){
     console.log("started");
-    if(button.innerText === START){  
-        current = 0;
-        wrong = 0;
-        incorrect = 0;  
-        running = true;
-        button.innerText = STOP;  
-        inputBox.value = "";
-        inputBox.focus();
-        start = new Date();
-    }else{
-        running = false;
+    button.disabled = true;
+    current = 0;
+    wrong = 0;
+    incorrect = 0;  
+    running = true;
+    inputBox.value = "";
+    inputBox.focus();
+    start = new Date();
+    console.log(current + ", " + wrong + ", " + incorrect);
+}
+
+function endGame(){
+    running = false;
         var fullText = inputBox.value;
         button.innerText = START;
         end = new Date();
@@ -67,8 +74,7 @@ function mainButton(){
                 spaces++;
             }
         }
-        inputBox.value = "";
-        current = 0;
         alert("You typed " + (Math.round(((spaces+1)/fullTime)*60)) + " wpm with an accuracy of " + Math.round((((textToType.length-incorrect) / textToType.length)*100)) + "%.");
-    }
+        inputBox.value = "";
+        button.disabled = false;
 }
