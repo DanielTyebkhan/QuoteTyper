@@ -15,7 +15,7 @@ header {
     text-align: center;
 }
 
-.wrapper{
+.wrapper {
     text-align: center;
 }
 
@@ -28,4 +28,5 @@ header {
     width: 20rem;
     height: 20rem;
     resize: none;
+    pointer-events: none;
 }
