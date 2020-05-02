@@ -34,7 +34,7 @@ inputBox.addEventListener("keypress", function(e){
 });
 inputBox.addEventListener("keydown", function(e){
     if(running){
-        if(e.keyCode === 8 && wrong === 0 && inputBox.selectionStart === inputBox.selectionEnd){
+        if(e.keyCode === 8 && wrong === 0 && inputBox.selectionStart === current){
             current--;
             if(current < 0){
                 current = 0;
