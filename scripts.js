@@ -73,7 +73,7 @@ function endGame(){
     var fullText = inputBox.value;
     button.innerText = START;
     end = new Date();
-    var fullTime = ((end.getTime() - start.getTime()) / 1000);
+    var fullTime = ((end.getTime() - start.getTime()));
     var spaces = 0;
     var i = 0;
     for(i; i<fullText.length; i++){
@@ -81,9 +81,13 @@ function endGame(){
             spaces++;
         }
     }
-    alert("You typed " + (Math.round(((spaces+1)/fullTime)*60)) + " wpm with an accuracy of " + Math.round((((textToType.length-incorrect) / textToType.length)*100)) + "%.");
+    alert("You typed " + getWPM(fullTime, spaces+1) + " wpm with an accuracy of " + Math.round((((textToType.length-incorrect) / textToType.length)*100)) + "%.");
     inputBox.value = "";
     inputBox.style.background = "white";
     button.disabled = false;
     inputBox.disabled = true;
+}
+
+function getWPM(time, words){
+    return Math.round(words/(time/60000));
 }
