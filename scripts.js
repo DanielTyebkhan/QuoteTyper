@@ -1,3 +1,4 @@
+var quote;
 var START = "Start";
 var STOP = "Stop";
 
@@ -11,6 +12,17 @@ var running = false;
 var button = document.getElementById("start-stop");
 var inputBox = document.getElementById("input-text");
 var textToType = Array.from(document.getElementById("text-to-type").textContent);
+// https://type.fit/api/quotes
+fetch ("https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json")
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(myJSON){
+        console.log(JSON.stringify(myJSON));
+    })
+    .catch(function(error){
+        console.log(error);
+    });
 
 button.addEventListener("click", mainButton);
 inputBox.addEventListener("keypress", function(e){
