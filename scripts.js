@@ -11,15 +11,19 @@ var running = false;
 
 var button = document.getElementById("start-stop");
 var inputBox = document.getElementById("input-text");
+var toTypeDiv = document.getElementById("text-to-type");
 var textToType = Array.from(document.getElementById("text-to-type").textContent);
 
 
 const http = new XMLHttpRequest;
 const url = 'https://quotes15.p.rapidapi.com/quotes/random/';
-http.open("GET", url);
-http.setRequestHeader('X-RapidAPI-Host', 'quotes15.p.rapidapi.com');
-http.setRequestHeader('X-RapidAPI-Key', '82e49981edmsh51f070fdf1cb9dap1930d5jsn458ee671c233')
-http.send();
+
+function callAPI(){
+    http.open("GET", url);
+    http.setRequestHeader('X-RapidAPI-Host', 'quotes15.p.rapidapi.com');
+    http.setRequestHeader('X-RapidAPI-Key', '82e49981edmsh51f070fdf1cb9dap1930d5jsn458ee671c233')
+    http.send();
+}
 
 http.onreadystatechange=(e)=>{
     gotten = JSON.parse(http.responseText);
@@ -30,7 +34,7 @@ http.onreadystatechange=(e)=>{
 
 function setText(){
     console.log('texttotype' + textToType)
-    document.getElementById("text-to-type").textContent = textToType;
+    toTypeDiv.textContent = textToType;
 }
 
 button.addEventListener("click", mainButton);
@@ -107,6 +111,8 @@ function endGame(){
     inputBox.style.background = "white";
     button.disabled = false;
     inputBox.disabled = true;
+    toTypeDiv.innerText = "Loading..."
+    callAPI();
 }
 
 function getWPM(time, words){
