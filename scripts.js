@@ -9,7 +9,7 @@ var wrong; //keeps track of mistakes currently in box
 var incorrect; //keeps track of all mistakes to track accuracy
 var running = false;
 
-var button = document.getElementById("start-stop");
+var button = document.getElementById("start-button");
 var inputBox = document.getElementById("input-text");
 var toTypeDiv = document.getElementById("text-to-type");
 var textToType = Array.from(document.getElementById("text-to-type").textContent);
@@ -35,6 +35,7 @@ http.onreadystatechange=(e)=>{
 function setText(){
     console.log('texttotype' + textToType)
     toTypeDiv.textContent = textToType;
+    button.disabled = false;
 }
 
 button.addEventListener("click", mainButton);
@@ -109,7 +110,6 @@ function endGame(){
     alert("You typed " + getWPM(fullTime, spaces+1) + " wpm with an accuracy of " + Math.round((((textToType.length-incorrect) / textToType.length)*100)) + "%.");
     inputBox.value = "";
     inputBox.style.background = "white";
-    button.disabled = false;
     inputBox.disabled = true;
     toTypeDiv.innerText = "Loading..."
     callAPI();

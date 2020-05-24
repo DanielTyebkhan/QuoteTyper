@@ -7,12 +7,15 @@ body {
     background-color: #140316;
     color: #ffffff;
     text-align: center;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 header {
     color: red;
     justify-content: center;
     text-align: center;
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 
 .wrapper {
@@ -22,6 +25,28 @@ header {
 .text {
     width: 20rem;
     display: inline-block;  
+    padding: 10px;
+}
+
+.main-button {
+    padding-top: 10px;
+}
+
+#start-button {
+    padding: 10px;
+    font-family: inherit;
+    font-size: 20px;
+    border-radius: 0%;
+    border: none;
+}
+
+#instructions {
+    color: green;
+    padding: 10px;
+}
+
+#text-to-type {
+    text-align: left;
 }
 
 #input-text {
