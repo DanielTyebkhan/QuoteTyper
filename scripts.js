@@ -1,4 +1,4 @@
-var quote;
+var gotten;
 var START = "Start";
 var STOP = "Stop";
 
@@ -12,17 +12,26 @@ var running = false;
 var button = document.getElementById("start-stop");
 var inputBox = document.getElementById("input-text");
 var textToType = Array.from(document.getElementById("text-to-type").textContent);
-// https://type.fit/api/quotes
-fetch ("https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json")
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(myJSON){
-        console.log(JSON.stringify(myJSON));
-    })
-    .catch(function(error){
-        console.log(error);
-    });
+
+
+const http = new XMLHttpRequest;
+const url = 'https://quotes15.p.rapidapi.com/quotes/random/';
+http.open("GET", url);
+http.setRequestHeader('X-RapidAPI-Host', 'quotes15.p.rapidapi.com');
+http.setRequestHeader('X-RapidAPI-Key', '82e49981edmsh51f070fdf1cb9dap1930d5jsn458ee671c233')
+http.send();
+
+http.onreadystatechange=(e)=>{
+    gotten = JSON.parse(http.responseText);
+    console.log(gotten['content']);
+    textToType = gotten['content'];
+    setText();
+}
+
+function setText(){
+    console.log('texttotype' + textToType)
+    document.getElementById("text-to-type").textContent = textToType;
+}
 
 button.addEventListener("click", mainButton);
 inputBox.addEventListener("keypress", function(e){
