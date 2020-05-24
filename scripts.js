@@ -116,7 +116,8 @@ function endGame(){
     inputBox.value = "";
     inputBox.style.background = "white";
     inputBox.disabled = true;
-    toTypeDiv.innerText = "Loading..."
+    toTypeDiv.innerText = "Loading...";
+    authorDiv.innerText = "";
     callAPI();
 }
 
