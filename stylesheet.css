@@ -23,7 +23,7 @@ header {
 }
 
 .text {
-    width: 20rem;
+    width: 40rem;
     display: inline-block;  
     padding: 10px;
 }
@@ -49,8 +49,13 @@ header {
     text-align: left;
 }
 
+#author {
+    font-style: italic;
+    padding-top: 5px;
+}
+
 #input-text {
-    width: 20rem;
+    width: 40rem;
     height: 20rem;
     resize: none;
     pointer-events: none;

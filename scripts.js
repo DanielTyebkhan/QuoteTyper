@@ -12,11 +12,15 @@ var running = false;
 var button = document.getElementById("start-button");
 var inputBox = document.getElementById("input-text");
 var toTypeDiv = document.getElementById("text-to-type");
+var authorDiv = document.getElementById("author");
+var authorName = '';
 var textToType = Array.from(document.getElementById("text-to-type").textContent);
 
 
 const http = new XMLHttpRequest;
 const url = 'https://quotes15.p.rapidapi.com/quotes/random/';
+
+button.disabled = true;
 
 function callAPI(){
     http.open("GET", url);
@@ -27,14 +31,15 @@ function callAPI(){
 
 http.onreadystatechange=(e)=>{
     gotten = JSON.parse(http.responseText);
-    console.log(gotten['content']);
+    console.log(gotten);
     textToType = gotten['content'];
+    authorName = gotten['originator']['name'];
     setText();
 }
 
 function setText(){
-    console.log('texttotype' + textToType)
     toTypeDiv.textContent = textToType;
+    authorDiv.textContent = '- ' + authorName;
     button.disabled = false;
 }
 
