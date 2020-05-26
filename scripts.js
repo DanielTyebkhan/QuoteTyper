@@ -39,18 +39,19 @@ function callAPI() {
 http.onreadystatechange = async function (e) {
     gotten = JSON.parse(http.responseText);
     textToType = gotten['content'];
+    authorName = "- " + gotten['originator']['name'];
     while (isTypeable(textToType) === false) {
         textToType = "";
+        authorName = "";
         await new Promise(r => setTimeout(r, 5000));
         callAPI();
     }
-    authorName = gotten['originator']['name'];
     setText();
 }
 
 function setText() {
     toTypeDiv.textContent = textToType;
-    authorDiv.textContent = '- ' + authorName;
+    authorDiv.textContent = authorName;
     button.disabled = false;
 }
 
