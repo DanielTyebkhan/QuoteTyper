@@ -41,8 +41,6 @@ http.onreadystatechange = async function (e) {
     textToType = gotten['content'];
     authorName = "- " + gotten['originator']['name'];
     while (isTypeable(textToType) === false) {
-        textToType = "";
-        authorName = "";
         await new Promise(r => setTimeout(r, 5000));
         callAPI();
     }
