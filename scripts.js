@@ -1,6 +1,13 @@
 var gotten;
 var START = "Start";
 var STOP = "Stop";
+const keyboard = ["`", "~", "1", "!", "2", "@", "3", "#", "4", "$","5",
+"%", "6", "^", "7", "&", "8", "*", "9", "(", "0", ")", "-", "_", "=", "+",
+"q", "Q", "w", "W", "e", "E", "r", "R", "t", "T", "y", "Y", "u", "U","i",
+"I", "o", "O", "p", "P", "[", "{", "]", "}", "\\", "|", "a", "A", "s",
+"S", "d", "D", "f", "F", "g", "G", "h", "H", "j", "J", "k", "K", "l", "L",
+";", ":", "'", "\"", "z", "Z", "x", "X", "c", "C", "v", "V", "b", "B", 
+"n", "N", "m", "M", ",", "<", ".", ">", "/", "?", " "]
 
 var start;
 var end;
@@ -29,10 +36,17 @@ function callAPI(){
     http.send();
 }
 
-http.onreadystatechange=(e)=>{
+http.onreadystatechange=async function(e){
     gotten = JSON.parse(http.responseText);
     console.log(gotten);
     textToType = gotten['content'];
+    console.log(textToType);
+    console.log(isTypeable(textToType));
+    while(isTypeable(textToType) === false){
+        textToType = "";
+        await new Promise(r => setTimeout(r, 5000));
+        callAPI();
+    }
     authorName = gotten['originator']['name'];
     setText();
 }
@@ -123,4 +137,13 @@ function endGame(){
 
 function getWPM(time, words){
     return Math.round(words/(time/60000));
+}
+
+function isTypeable(contents) {
+    for (var i = 0; i<contents.length; i++){
+        if(!keyboard.includes(contents.charAt(i))){
+            return false;
+        }
+    }
+    return true;
 }
