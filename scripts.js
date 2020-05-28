@@ -37,20 +37,24 @@ function callAPI() {
 }
 
 http.onreadystatechange = async function (e) {
-    gotten = JSON.parse(http.responseText);
-    textToType = gotten['content'];
-    authorName = "- " + gotten['originator']['name'];
-    while (isTypeable(textToType) === false) {
-        await new Promise(r => setTimeout(r, 5000));
-        callAPI();
+    if (running === false) {
+        gotten = JSON.parse(http.responseText);
+        textToType = gotten['content'];
+        authorName = "- " + gotten['originator']['name'];
+        while (isTypeable(textToType) === false) {
+            await new Promise(r => setTimeout(r, 5000));
+            callAPI();
+        }
+        setText();
     }
-    setText();
 }
 
 function setText() {
     toTypeDiv.textContent = textToType;
     authorDiv.textContent = authorName;
-    button.disabled = false;
+    if (running === false) {
+        button.disabled = false;
+    }
 }
 
 button.addEventListener("click", mainButton);
