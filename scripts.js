@@ -15,6 +15,7 @@ var current;
 var wrong; //keeps track of mistakes currently in box
 var incorrect; //keeps track of all mistakes to track accuracy
 var running = false;
+var shouldPrint = true;
 
 var button = document.getElementById("start-button");
 var inputBox = document.getElementById("input-text");
@@ -78,13 +79,22 @@ inputBox.addEventListener("keyup", function (e) {
     if ((wrong === 0 && current === textToType.length) || inputBox.value.length === textToType.length) {
         endGame();
     }
+    console.log(e);
+    shouldPrint = true;
 });
 inputBox.addEventListener("keydown", function (e) {
-    if (running) {
-        if (e.keyCode === 8 && wrong === 0 && inputBox.selectionStart === current) {
-            current--;
-            if (current < 0) {
-                current = 0;
+    if (shouldPrint === false) {
+        e.preventDefault();
+        e.stopPropagation();
+    } else {
+        if (running) {
+            if (e.keyCode === 8 && wrong === 0 && inputBox.selectionStart === current) {
+                current--;
+                if (current < 0) {
+                    current = 0;
+                }
+            } else if (e.keyCode != 16){
+                shouldPrint = false;
             }
         }
     }
