@@ -15,7 +15,8 @@ var current;
 var wrong; //keeps track of mistakes currently in box
 var incorrect; //keeps track of all mistakes to track accuracy
 var running = false;
-var shouldPrint = true;
+var shouldPrint = true; //STORE PREVIOUS KEY THEN CHECK IF IT IS CLICKED AGAIN TO FIX GHOSTING ISSUE
+var previous;
 
 var button = document.getElementById("start-button");
 var inputBox = document.getElementById("input-text");
@@ -73,6 +74,7 @@ inputBox.addEventListener("keypress", function (e) {
             wrong++;
             incorrect++;
         }
+    previous = e.key;
     }
 });
 inputBox.addEventListener("keyup", function (e) {
@@ -83,7 +85,7 @@ inputBox.addEventListener("keyup", function (e) {
     shouldPrint = true;
 });
 inputBox.addEventListener("keydown", function (e) {
-    if (shouldPrint === false) {
+    if (shouldPrint === false && previous === e.key) {
         e.preventDefault();
         e.stopPropagation();
     } else {
