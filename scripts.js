@@ -132,7 +132,7 @@ function endGame() {
             spaces++;
         }
     }
-    alert("You typed " + getWPM(fullTime, spaces + 1) + " wpm with an accuracy of " + Math.round((((textToType.length - incorrect) / textToType.length) * 100)) + "%.");
+    alert("You typed " + getWPM(fullTime, spaces + 1) + " wpm with an accuracy of " + getAccuracy(textToType.length, incorrect) + "%.");
     inputBox.value = "";
     inputBox.style.background = "white";
     inputBox.disabled = true;
@@ -141,9 +141,10 @@ function endGame() {
     callAPI();
 }
 
-function getWPM(time, words) {
-    return Math.round(words / (time / 60000));
-}
+getWPM = (time, words) => Math.round(words / (time / 60000));
+
+
+getAccuracy = (total, mistakes) =>   Math.round(((total - mistakes) / total) * 100); 
 
 function isTypeable(contents) {
     for (var i = 0; i < contents.length; i++) {
