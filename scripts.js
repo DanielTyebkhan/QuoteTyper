@@ -15,7 +15,7 @@ var current;
 var wrong; //keeps track of mistakes currently in box
 var incorrect; //keeps track of all mistakes to track accuracy
 var running = false;
-var shouldPrint = true; //STORE PREVIOUS KEY THEN CHECK IF IT IS CLICKED AGAIN TO FIX GHOSTING ISSUE
+var shouldPrint = true; 
 var previous;
 
 var button = document.getElementById("start-button");
@@ -39,12 +39,16 @@ function callAPI() {
 }
 
 http.onreadystatechange = async function (e) {
-    if (running === false) {
-        gotten = JSON.parse(http.responseText);
-        textToType = gotten['content'];
-        authorName = "- " + gotten['originator']['name'];
+    if (http.status === 429) {
+        await new Promise(r => setTimeout(r, 7000));
+        callAPI();
+    }
+    else if (running === false) {
+        var received = JSON.parse(http.responseText);
+        textToType = received['content'];
+        authorName = "- " + received['originator']['name'];
         while (isTypeable(textToType) === false) {
-            await new Promise(r => setTimeout(r, 5000));
+            await new Promise(r => setTimeout(r, 7000));
             callAPI();
         }
         setText();
@@ -54,21 +58,19 @@ http.onreadystatechange = async function (e) {
 function setText() {
     toTypeDiv.textContent = textToType;
     authorDiv.textContent = authorName;
-    if (running === false) {
+    if (running === false) 
         button.disabled = false;
-    }
 }
 
 button.addEventListener("click", mainButton);
+
 inputBox.addEventListener("keypress", function (e) {
     if (running) {
         if (e.key === textToType[current] && current === inputBox.selectionStart) {
-            inputBox.style.background = "green";
             current++;
             wrong--;
-            if (wrong < 0) {
-                wrong = 0;
-            }
+            wrong = Math.max(0, wrong);
+            inputBox.style.background = "green";
         } else {
             inputBox.style.background = "red";
             wrong++;
@@ -77,13 +79,14 @@ inputBox.addEventListener("keypress", function (e) {
     previous = e.key;
     }
 });
+
 inputBox.addEventListener("keyup", function (e) {
     if ((wrong === 0 && current === textToType.length) || inputBox.value.length === textToType.length) {
         endGame();
     }
-    console.log(e);
     shouldPrint = true;
 });
+
 inputBox.addEventListener("keydown", function (e) {
     if (shouldPrint === false && previous === e.key) {
         e.preventDefault();
@@ -92,15 +95,14 @@ inputBox.addEventListener("keydown", function (e) {
         if (running) {
             if (e.keyCode === 8 && wrong === 0 && inputBox.selectionStart === current) {
                 current--;
-                if (current < 0) {
-                    current = 0;
-                }
+                current = Math.max(0, current);
             } else if (e.keyCode != 16){
                 shouldPrint = false;
             }
         }
     }
 });
+
 document.body.addEventListener("click", function (e) {
     if (running) {
         inputBox.focus();
@@ -125,13 +127,7 @@ function endGame() {
     button.innerText = START;
     end = new Date();
     var fullTime = ((end.getTime() - start.getTime()));
-    var spaces = 0;
-    var i = 0;
-    for (i; i < fullText.length; i++) {
-        if (fullText[i] === " ") {
-            spaces++;
-        }
-    }
+    var spaces = countSpaces(fullText);
     alert("You typed " + getWPM(fullTime, spaces + 1) + " wpm with an accuracy of " + getAccuracy(textToType.length, incorrect) + "%.");
     inputBox.value = "";
     inputBox.style.background = "white";
@@ -143,9 +139,24 @@ function endGame() {
 
 getWPM = (time, words) => Math.round(words / (time / 60000));
 
-
 getAccuracy = (total, mistakes) =>   Math.round(((total - mistakes) / total) * 100); 
 
+function countSpaces(text) {
+    var spaces = 0;
+    for (var i = 0; i < text.length; i++) {
+        if (text[i] === " ") {
+            spaces++;
+        }
+    }
+    return spaces;
+}
+
+/*
+Checks that a string can be typed on a standard keyboard
+
+@param {contents} The contents to check for typability
+@return true if it can be typed, else false
+*/
 function isTypeable(contents) {
     for (var i = 0; i < contents.length; i++) {
         if (!keyboard.includes(contents.charAt(i))) {
