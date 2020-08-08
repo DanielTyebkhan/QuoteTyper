@@ -61,3 +61,7 @@ header {
     resize: none;
     pointer-events: none;
 }
+
+#note {
+    font-size: 10px;
+}
